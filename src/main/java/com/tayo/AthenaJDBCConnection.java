@@ -15,17 +15,21 @@ import java.util.Properties;
 
 public class AthenaJDBCConnection
 {
-    static final String athenaUrl = "jdbc:awsathena://athena.us-east-1.amazonaws.com:443";
+    static final String athenaUrl = "jdbc:awsathena://athena.us-west-2.amazonaws.com:443";
+
+    static final String myAthenaStg = "myathenastg";
 
     public static void handleRequest(Object input, Context context) {
 
         Connection conn = null;
         Statement statement = null;
+        String staging_dir = System.getenv(myAthenaStg);
+        System.out.println("Staging directory is " + staging_dir);
 
         try {
             Class.forName("com.amazonaws.athena.jdbc.AthenaDriver");
             Properties info = new Properties();
-            info.put("s3_staging_dir", "s3://temitayo/");
+            info.put("s3_staging_dir", staging_dir);
             info.put("aws_credentials_provider_class","com.amazonaws.auth.DefaultAWSCredentialsProviderChain");
 
 
